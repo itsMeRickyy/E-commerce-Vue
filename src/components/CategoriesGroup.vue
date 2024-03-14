@@ -1,11 +1,9 @@
 <script setup>
 import {computed, ref} from "vue";
-import {useProductStore} from "../store/UseProductStore";
-const store = useProductStore();
+import {useProductsStore} from "../store/useProductsStore";
+const store = useProductsStore();
 const products = computed(() => store.products);
 // const products = ref(store.products);
-
-console.log("this is", products.value[1]);
 </script>
 
 <template>

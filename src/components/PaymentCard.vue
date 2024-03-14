@@ -9,10 +9,11 @@ const cart = computed(() => {
 });
 
 const totalPrice = ref(0);
+const totalPriceComputed = computed(() => cart.value.reduce((acc, item) => acc + item.price * item.quantity, 0));
 
 onMounted(async () => {
   const sum = cart.value.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  totalPrice.value = sum;
+  totalPrice.value = sum.toFixed(1);
 });
 </script>
 
@@ -61,12 +62,12 @@ onMounted(async () => {
             <tfoot>
               <tr class="font-semibold text-gray-900 dark:text-white">
                 <th scope="row" class="px-6 py-3 text-base">Total</th>
-                <td class="px-6 py-3">{{ totalPrice }}</td>
+                <td class="px-6 py-3">${{ totalPriceComputed.toFixed(1) }}</td>
               </tr>
             </tfoot>
           </table>
         </div>
-        <button class="bg-blue-600 text-white p-2 whitespace-nowrap rounded-full text-sm w-full">Pay ${{ totalPrice }}</button>
+        <button class="bg-blue-600 text-white p-2 whitespace-nowrap rounded-full text-sm w-full">Pay ${{ totalPriceComputed.toFixed(1) }}</button>
       </div>
     </div>
   </div>

@@ -1,17 +1,24 @@
 <script setup>
+import {ref} from "vue";
 import {computed} from "vue";
-import {RouterLink} from "vue-router";
-import {IconCaretDownFilled, IconUser, IconShoppingCart, IconMoon, IconSun, IconCactusFilled, IconPawFilled} from "@tabler/icons-vue";
+import {RouterLink, useRouter} from "vue-router";
+import {IconCaretDownFilled, IconUser, IconShoppingCart, IconMoon, IconSun, IconSearch, IconPawFilled} from "@tabler/icons-vue";
 import {useStore} from "../../store/Store";
 import {useCartStore} from "../../store/useCartStore";
 const cartStore = useCartStore();
-
+const router = useRouter();
 const store = useStore();
 
-const toggleDarkMode = () => {
-  store.toggleDarkMode();
-};
 const darkMode = computed(() => store.darkMode);
+
+const searchTerm = ref("");
+
+const handleSearch = () => {
+  if (searchTerm.value) {
+    router.push({name: "search", params: {searchTerm: searchTerm.value}});
+  }
+  // console.log(searchTerm.value);
+};
 </script>
 
 <template>
@@ -28,10 +35,9 @@ const darkMode = computed(() => store.darkMode);
     </div>
     <div class="flex gap-5">
       <div class="flex bg-slate-300 rounded-full px-4 py-1 overflow-hidden">
-        <input class="placeholder:text-black placeholder:text-sm bg-transparent outline-none border-none w-44" placeholder="Search Product" type="text" />
-        <!-- <button>Search</button> -->
-        <button>
-          <img src="/searchIcon.svg" alt="search" />
+        <input @keyup.enter="handleSearch" v-model="searchTerm" class="placeholder:text-black placeholder:text-sm bg-transparent outline-none border-none w-44" placeholder="Search Product" type="text" />
+        <button @click="handleSearch">
+          <IconSearch />
         </button>
       </div>
       <button @click="toggleDarkMode">

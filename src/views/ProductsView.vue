@@ -1,14 +1,14 @@
 <script setup>
-import {ref, onMounted} from "vue";
+import {ref, computed} from "vue";
 import {IconCaretDownFilled, IconHeart} from "@tabler/icons-vue";
 import Products from "../components/Products.vue";
-
 import {getCategories} from "../services/fetchProducts";
-const categories = ref([]);
+import {useProductsStore} from "../store/useProductsStore";
 
-onMounted(async () => {
-  categories.value = await getCategories();
-});
+const productStore = useProductsStore();
+const categories = computed(() => productStore.categories);
+
+console.log(productStore.categories);
 </script>
 
 <template>
@@ -16,9 +16,9 @@ onMounted(async () => {
 
   <div class="flex justify-between my-3">
     <div class="flex justify-between gap-3 w-[50%]">
-      <div v-if="isLoading">Loading...</div>
+      <!-- <div v-if="isLoading">Loading...</div> -->
 
-      <div v-else="isLoading" v-for="(category, index) in categories" :key="index">
+      <div v-for="(category, index) in productStore.categories" :key="index">
         <button class="border border-slate-400 text-sm rounded-full px-4 py-1 overflow-hidden whitespace-nowrap text-ellipsis flex">{{ category }}</button>
       </div>
     </div>
